@@ -13,7 +13,7 @@ class DinnerModel {
 
     setNumberOfGuests(num) {
         if(num >= 0) {
-            this.quests = num;
+            this.guests = num;
         } else {
             return false;
         }
