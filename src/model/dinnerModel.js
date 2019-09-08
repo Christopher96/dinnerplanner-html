@@ -25,6 +25,7 @@ class DinnerModel {
 
     //Returns the dish that is on the menu for selected type 
     getSelectedDish(type) {
+        // LAB 1
         for(let i = 0; i < this.menu.length; i++) {
             if(this.menu[i].type === type) {
                 return this.menu[i];
