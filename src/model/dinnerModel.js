@@ -2,7 +2,7 @@
 class DinnerModel {
 
     constructor() {
-        // LAB 1
+        const hello = "";
         this.dishes = dishesConst;
 
         //TODO Lab 0
