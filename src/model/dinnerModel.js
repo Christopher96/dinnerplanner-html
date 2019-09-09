@@ -1,8 +1,8 @@
+
 //DinnerModel class
 class DinnerModel {
 
     constructor() {
-        const hello = "";
         this.dishes = dishesConst;
 
         //TODO Lab 0
@@ -10,6 +10,41 @@ class DinnerModel {
         // and selected dishes for the dinner menu
         this.menu = [];
         this.guests = 0;
+
+    }
+
+    toggleSpinner(enabled) {
+        document.getElementById("loader").style.display = (enabled) ? "initial" : "none";
+    }
+
+    getConfig() {
+        return fetch('src/config.json')
+            .then(response => response.json());
+    }
+
+    jsonToQuery(json) {
+        return '?' + 
+            Object.keys(json).map(function(key) {
+                return encodeURIComponent(key) + '=' +
+                    encodeURIComponent(json[key]);
+            }).join('&');
+    }
+
+    apiGet(path = "", params = {}) {
+        let url = path + this.jsonToQuery(params);
+        this.toggleSpinner(true);
+        return this.getConfig()
+        .then(data => fetch(data.endpoint+url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Mashape-Key': data.api_key
+            }
+        }))
+        .then(res => {
+            this.toggleSpinner(false);
+            return res.json();
+        });
     }
 
     setNumberOfGuests(num) {
@@ -26,11 +61,7 @@ class DinnerModel {
 
     //Returns the dish that is on the menu for selected type 
     getSelectedDish(type) {
-        for(let i = 0; i < this.menu.length; i++) {
-            if(this.menu[i].type === type) {
-                return this.menu[i];
-            }
-        }
+        return this.getFullMenu().find(dish => dish.type === type);
     }
 
     //Returns all the dishes on the menu.
@@ -41,52 +72,33 @@ class DinnerModel {
     //Returns all ingredients for all the dishes on the menu.
     getAllIngredients() {
         let ingredients = [];
-        let menu = this.getFullMenu();
-        for(let i = 0; i < menu.length; i++) {
-            let dish = menu[i];
-            ingredients.push(dish.ingredients);
-        }
+        this.getFullMenu().forEach(dish => {
+            dish.ingredients.forEach(ingredient => ingredient.push(ingredient));
+        });
         return ingredients;
     }
 
     //Returns the total price of the menu (all the ingredients multiplied by number of guests).
     getTotalMenuPrice() {
         let totalCost = 0;
-        let allIngredients = this.getAllIngredients();
-        for(let i = 0; i < allIngredients.length; i++) {
-            for(let j = 0; j < allIngredients[i].length; j++) {
-                totalCost += ingredients[j].cost;
-            }
-        }
-        return totalCost*this.guests;
+        let ingredients = getAllIngredients();
+        ingredients.forEach(ingredient => totalCost += ingredient.cost);
+        return totalCost * this.guests;
     }
 
     //Adds the passed dish to the menu. If the dish of that type already exists on the menu
     //it is removed from the menu and the new one added.
-    addDishToMenu(id) {
-        let addDish = null;
-        for(let i = 0; i < this.dishes.length; i++) {
-            if(id === this.dishes[i].id) {
-                addDish = this.dishes[i];
-            }
-        }
-        if(!addDish) {
-            return false;
-        }
-        let found = this.getSelectedDish(addDish.type);
+    addDishToMenu(dish) {
+        let found = this.getSelectedDish(dish.type);
         if(found) {
             this.removeDishFromMenu(found.id);
         }
-        this.menu.push(addDish);
+        this.menu.push(dish);
     }
 
     //Removes dish from menu
     removeDishFromMenu(id) {
-        for(let i = 0; i < this.menu.length; i++) {
-            if(this.menu[i].id === id) {
-                delete this.menu[i];
-            }
-        }
+        this.menu = this.menu.filter(dish => dish.id !== id);
     }
 
 
@@ -94,43 +106,29 @@ class DinnerModel {
     //query argument, text, if passed only returns dishes that contain the query in name or one of the ingredients.
     //if you don't pass any query, all the dishes will be returned
     getAllDishes(type, query) {
-        if(!type && !query) {
-            return this.dishes;
-        }
-        if(!query) {
-            let filtered = [];
-            for(let i = 0; i < this.dishes.length; i++) {
-                let dish = this.dishes[i];
-                if(dish.type === type) {
-                    filtered.push(dish);
-                }
-            }
-            return filtered;
-        }
-
-        let filtered = [];
-        for(let i = 0; i < this.dishes.length; i++) {
-            let dish = this.dishes[i];
-            if(dish.name.indexOf(query) !== -1) {
-                filtered.push(dish);
-            }
-            for(let j = 0; j < dish.ingredients.length; j++) {
-                if(dish.ingredients[j].name.indexOf(query) !== -1) {
-                    filtered.push(dish);
-                }
-            }
-        }
-        return filtered;
+        if(!type && !query)
+            return this.apiGet("recipes/search")
+                .then(res => {
+                    return res.results;
+                })
+                .catch(console.error);
+        return this.apiGet("recipes/search",  {
+            type,
+            query
+        })
+            .then(res => {
+                return res.results;
+            })
+            .catch(console.error);
     }
 
     //Returns a dish of specific ID
     getDish(id) {
-        for (let dsh of this.dishes) {
-            if (dsh.id === id) {
-                return dsh;
-            }
-        }
-        return undefined;
+        return this.apiGet("recipes/"+id+"/information")
+            .then(res => {
+                return res;
+            })
+            .catch(console.error);
     }
 }
 
