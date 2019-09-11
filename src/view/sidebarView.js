@@ -1,4 +1,4 @@
-class OverviewView {
+class SideBarView {
     constructor(container, model) {
         this.container = container;
         this.model = model;
@@ -6,12 +6,14 @@ class OverviewView {
 
     // An example of creating HTML procedurally. Think about the pros and cons of this approach.
     render() {
-        let content = fetch("src/view/overview.html")
+        let content = fetch("src/view/sidebar.html")
             .then(res => res.text())
-            .then(function(html) {
-                this.container.innerHTML = html;
+            .then(function(template) {
+                this.container.html(template);
                 this.afterRender();
             }.bind(this));
+
+        this.afterRender();
     }
 
     afterRender() {

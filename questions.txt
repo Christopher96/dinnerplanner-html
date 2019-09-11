@@ -1,0 +1,7 @@
+Loading templates issue, tests do not pass since they are checked asynchronously
+
+Ingredients, no price, another API call?
+
+Adding products to menu, save with cookie/local storage?
+
+Adding references to test.html

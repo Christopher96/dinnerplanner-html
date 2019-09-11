@@ -1,0 +1,159 @@
+html,
+body {
+    height: 100%;
+}
+
+.container-fluid {
+    height:90%;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(12px + 1vw);
+    height: 10%;
+    width: 100%;
+}
+
+#loader {
+    visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    background-color: rgba(0,0,0,0.5);
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+#loader .spinner {
+    height: 5em;
+    width: 5em;
+    color: white;
+}
+
+
+/* HOME VIEW */
+
+#startContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+}
+
+#startTxt {
+    max-width: 40em;
+}
+
+#startBtn {
+    margin-top: 2em;
+    width: auto;
+}
+
+
+/* SIDEBAR VIEW */
+
+#sideBarView {
+    padding: 2em;
+}
+
+#sideBarView .input-group {
+    width: 10em !important;
+}
+
+#sideBarView .btn {
+    width: 100%;
+}
+
+/* SEARCH RESULT VIEW */
+
+
+#dishSearchView {
+    padding: 2em;
+}
+
+#searchResults {
+    margin: 0 -2em;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.dish {
+    padding: 2em;
+    width: 15em;
+}
+
+.dish p {
+    padding: .5em;
+    text-align: center;
+    background-color: grey;
+    color: white;
+}
+
+.dish img {
+    width: 100%;
+}
+
+/* SEARCH DETAILS VIEW */
+
+#dishInformation img {
+    width: 100%;
+}
+
+
+/* OVERVIEW VIEW */
+
+#overviewHeader {
+    padding: 2em;
+}
+
+#overviewHeader button {
+    float: right;
+}
+
+#overviewDishes {
+    display: flex;
+    justify-content: center;
+}
+
+#overviewPrint {
+    padding: 2em;
+    text-align: center;
+}
+
+#overviewPrint button {
+    font-size: 1.5em;
+}
+
+/* CLASSES */
+
+.banner {
+    background-color: grey;
+}
+
+.banner.left {
+    float: left;
+}
+
+.banner.right {
+    float: right;
+}
+
+.title {
+    font-size: 1.5em;
+}
+
+/* MEDIA QUERIES */
+
+@media screen and (max-width: 600px) {
+    #ingredientTable {
+        margin: 0 -2em;
+    }
+}
