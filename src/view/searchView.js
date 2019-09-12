@@ -8,6 +8,8 @@ class SearchView {
     // An example of creating HTML declaratively. Think about the pros and cons of this approach.
     render() {
 
+        this.container.empty();
+
         const loader = $("<div/>", {
             id: "loader"
         }).appendTo(this.container);

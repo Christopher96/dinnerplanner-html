@@ -4,6 +4,11 @@ window.onload = function () {
     const model = new DinnerModel();
     const container = document.getElementsByClassName("page-content")[0]
 
+    $("header").click(() => {
+        const view = new SearchView(container, model);
+        view.render();
+    });
+
     // const view = new PrintoutView(container, model);
     // const view = new OverviewView(container, model);
     // const view = new HomeView(container, model);

@@ -7,12 +7,27 @@ class DishDetailsView {
 
     // An example of creating HTML procedurally. Think about the pros and cons of this approach.
     render() {
-        let content = fetch("src/view/dishdetails.html")
-            .then(res => res.text())
-            .then(function(template) {
-                this.container.html(template);
-                this.afterRender();
-            }.bind(this));
+        let template = `
+        <div class="row">
+            <div id="dishInformation" class="col-md-6">
+                <p class="title"></p>
+                <img src="#" alt="">
+                <p class="instructions"></p>
+                <button class="btn btn-primary">Back to search</button>
+            </div>
+            <div class="col-md-6">
+                <span class="title">Ingredients for 3 people</span>
+                <table id="ingredientTable" class="table">
+                    <tbody>
+                    </tbody>
+                </table>
+                <hr/>
+                <button class="btn btn-primary">Add to menu</button>
+                <span class="total">Sek 77.20</span>
+            </div>
+        </div>`;
+        this.container.html(template);
+        this.afterRender();
     }
 
     afterRender() {

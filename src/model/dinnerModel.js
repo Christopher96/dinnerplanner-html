@@ -8,14 +8,70 @@ class DinnerModel {
         // implement the data structure that will hold number of guests
         // and selected dishes for the dinner menu
         this.guests = 5;
+        this.menu = [
+            { title: "Meatballs", price: "SEK 70", image: "src/images/meatballs.jpg" },
+            { title: "Toast", price: "SEK 80", image: "src/images/toast.jpg" },
+            { title: "Icecream", price: "SEK 75", image: "src/images/icecream.jpg" },
+        ];
     }
 
     setNumberOfGuests(num) {
-        //TODO Lab 0
+        if(num >= 0) {
+            this.guests = num;
+        } else {
+            return false;
+        }
     }
 
     getNumberOfGuests() {
         return this.guests;
+    }
+
+    //Returns the dish that is on the menu for selected type 
+    getSelectedDish(type) {
+        return this.getFullMenu().find(dish => dish.type === type);
+    }
+
+    //Returns all the dishes on the menu.
+    getFullMenu() {
+        return this.menu;
+    }
+
+    //Returns all ingredients for all the dishes on the menu.
+    getAllIngredients() {
+        let ingredients = [];
+        this.getFullMenu().forEach(dish => {
+            dish.ingredients.forEach(ingredient => ingredient.push(ingredient));
+        });
+        return ingredients;
+    }
+
+    //Returns the total price of the menu (all the ingredients multiplied by number of guests).
+    getTotalMenuPrice() {
+        let totalCost = 0;
+        let ingredients = getAllIngredients();
+        ingredients.forEach(ingredient => totalCost += ingredient.cost);
+        return totalCost * this.guests;
+    }
+
+    //Adds the passed dish to the menu. If the dish of that type already exists on the menu
+    //it is removed from the menu and the new one added.
+    addDishToMenu(id) {
+        this.getDish(id)
+            .then(function(dish) {
+                let found = this.getSelectedDish(dish.type);
+                if(found) {
+                    this.removeDishFromMenu(found.id);
+                }
+                this.menu.push(dish);
+                console.log(this.menu);
+                console.log(this.menu.length);
+            }.bind(this));
+    }
+
+    //Removes dish from menu
+    removeDishFromMenu(id) {
+        this.menu = this.menu.filter(dish => dish.id !== id);
     }
 
     getConfig() {
@@ -45,39 +101,6 @@ class DinnerModel {
                 return res.json();
             });
     }
-
-
-    //Returns the dish that is on the menu for selected type 
-    getSelectedDish(type) {
-        //TODO Lab 0
-    }
-
-    //Returns all the dishes on the menu.
-    getFullMenu() {
-        //TODO Lab 0
-    }
-
-    //Returns all ingredients for all the dishes on the menu.
-    getAllIngredients() {
-        //TODO Lab 0
-    }
-
-    //Returns the total price of the menu (all the ingredients multiplied by number of guests).
-    getTotalMenuPrice() {
-        //TODO Lab 0
-    }
-
-    //Adds the passed dish to the menu. If the dish of that type already exists on the menu
-    //it is removed from the menu and the new one added.
-    addDishToMenu(id) {
-        //TODO Lab 0 
-    }
-
-    //Removes dish from menu
-    removeDishFromMenu(id) {
-        //TODO Lab 0
-    }
-
 
     //Returns all dishes of specific type (i.e. "starter", "main dish" or "dessert").
     //query argument, text, if passed only returns dishes that contain the query in name or one of the ingredients.

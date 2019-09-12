@@ -8,6 +8,7 @@ body {
 }
 
 header {
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -121,6 +122,10 @@ header {
 #overviewDishes {
     display: flex;
     justify-content: center;
+}
+
+#overviewDishes .price {
+    float: right;
 }
 
 #overviewPrint {
