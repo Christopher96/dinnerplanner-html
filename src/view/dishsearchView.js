@@ -21,7 +21,7 @@ class DishSearchView {
             </div>
         </div>
         </div>
-        <div id="searchResults"></div>
+        <div id="dishItems"></div>
         `;
         this.container.html(template);
         this.afterRender();
@@ -35,6 +35,7 @@ class DishSearchView {
 
             this.model.getAllDishes(type, query)
                 .then(res => {
+                    console.log(res);
                     $("#loader").css("visibility", "hidden");
                     $("#searchResults").html("");
                     res.forEach(dish => this.addDish(dish));
@@ -47,7 +48,7 @@ class DishSearchView {
     addDish(dish) {
         const link = $("<a/>").on("click", () => {
             new DishDetailsView(this.container, this.model, dish.id).render();
-        }).appendTo("#searchResults");
+        }).appendTo("#dishItems");
 
         const dishEl = $("<div/>", {
             class: "dish"
@@ -60,7 +61,5 @@ class DishSearchView {
         $("<p/>", {
             text: dish.title.replace("#WeekdaySupper", "").replace("#ChooseDreams", "")
         }).appendTo(dishEl);
-
-
     }
 }
