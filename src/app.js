@@ -9,8 +9,8 @@ window.onload = function () {
         view.render();
     });
 
-    // const view = new PrintoutView(container, model);
-    const view = new OverviewView(container, model);
+    const view = new PrintoutView(container, model);
+    // const view = new OverviewView(container, model);
     // const view = new HomeView(container, model);
     // const view = new SearchView(container, model);
     view.render();

@@ -147,6 +147,16 @@ header {
     font-size: 1.5em;
 }
 
+
+/* PRINTOUT VIEW */
+
+#printoutDishes .row {
+    padding: 2em;
+}
+#printoutDishes img {
+    width: 100%;
+}
+
 /* CLASSES */
 
 .banner {

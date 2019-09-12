@@ -13,7 +13,7 @@ class DishDetailsView {
                 <p class="title"></p>
                 <img src="#" alt="">
                 <p class="instructions"></p>
-                <button class="btn btn-primary">Back to search</button>
+                <button id="goBack" class="btn btn-primary">Back to search</button>
             </div>
             <div class="col-md-6">
                 <span class="title">Ingredients for 3 people</span>
@@ -47,5 +47,9 @@ class DishDetailsView {
                 })
             });
         $("#loader").css("visibility", "visible");
+        $("#goBack").click(() => {
+            let container = $(".page-content")
+            new SearchView(container, this.model).render();
+        });
     }
 }

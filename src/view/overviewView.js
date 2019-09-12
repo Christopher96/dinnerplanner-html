@@ -9,7 +9,7 @@ class OverviewView {
         let template = `
         <div id="overviewHeader">
             <span class="title">My Dinner: <span class="value-num-guests"></span> People</span>
-            <button class="btn btn-primary">Go back and edit dinner</button>
+            <button id="goBack" class="btn btn-primary">Go back and edit dinner</button>
         </div>
         <hr/>
         <div id="overviewDishes">
@@ -36,16 +36,18 @@ class OverviewView {
             this.addDish(dish);
         });
         $(".value-total-price").text(this.model.getTotalMenuPrice());
+        $("#goBack").click(() => {
+            new SearchView(this.container, this.model).render();
+        });
+        $("#toPrintBtn").click(() => {
+            new PrintoutView(this.container, this.model).render();
+        });
     }
 
     addDish(dish) {
-        const link = $("<a/>").on("click", () => {
-            new DishDetailsView(this.container, this.model, dish.id).render();
-        }).prependTo("#overviewDishes");
-
         const dishEl = $("<div/>", {
             class: "dish"
-        }).appendTo(link);
+        }).prependTo("#overviewDishes");
 
         $("<img/>", {
             src: "https://spoonacular.com/recipeImages/" + dish.image

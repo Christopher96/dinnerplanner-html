@@ -57,6 +57,8 @@ class SideBarView {
         });
         $(".value-total-price").text(this.model.getTotalMenuPrice());
         $("#confirmDinner").click(() => {
+            let container = $(".page-content");
+            new OverviewView(container, this.model).render();
         });
     }
 }

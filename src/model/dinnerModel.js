@@ -6,6 +6,8 @@ class DinnerModel {
         this.guests = 5;
         this.menu = [
             dishesConst[0],
+            dishesConst[0],
+            dishesConst[0],
         ];
     }
 
@@ -128,7 +130,8 @@ const dishesConst = [
         'name': 'Breakfast Pizza',
         'type': 'starter',
         'image': 'sourdough.jpg',
-        'description': "Here is how you make it... Lore ipsum...",
+        'description': "Dolor dolor atque ad doloribus architecto. Molestiae temporibus iste elit earum provident. Quam obcaecati assumenda veritatis pariatur a Repellat quaerat repellendus quam laudantium similique Iste quisquam vitae quod sunt placeat",
+        'instructions': "Amet modi autem suscipit natus facere nostrum eligendi! Minus necessitatibus odio sapiente quos doloremque temporibus! Quia ipsa repellendus iusto iure adipisci Tempora dolor quidem culpa repellat quasi. Ex sequi veniam!",
         'image': 'Breakfast-Pizza-559251.jpg',
         'ingredients': [{
             'name': 'active dry yeast',
