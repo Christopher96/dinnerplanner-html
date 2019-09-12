@@ -36,7 +36,7 @@ class DishDetailsView {
                 $("#loader").css("visibility", "hidden");
                 $("#dishInformation .title").text(dish.title);
                 $("#dishInformation img").attr("src", dish.image);
-                $("#dishInformation .instructions").text(dish.instructions);
+                $("#dishInformation .instructions").html(dish.instructions);
                 $("#ingredientTable tbody").html("");
                 dish.extendedIngredients.forEach(ing => {
                     let row = $("<tr><td>"+ing.amount+" "+ing.unit+"</td>"+

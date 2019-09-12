@@ -32,10 +32,9 @@ class DishSearchView {
             const query = $("#dishQuery").val();
             const type = $("#dishType option:selected").val();
 
-
+            $("#dishItems").empty();
             this.model.getAllDishes(type, query)
                 .then(res => {
-                    console.log(res);
                     $("#loader").css("visibility", "hidden");
                     $("#searchResults").html("");
                     res.forEach(dish => this.addDish(dish));

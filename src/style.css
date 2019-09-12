@@ -132,6 +132,12 @@ header {
     float: right;
 }
 
+#overviewDishes .total {
+    float: right;
+    font-size: 2em;
+    margin: 2em;
+}
+
 #overviewPrint {
     padding: 2em;
     text-align: center;

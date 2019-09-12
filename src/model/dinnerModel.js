@@ -4,7 +4,9 @@ class DinnerModel {
     constructor() {
         this.dishes = dishesConst;
         this.guests = 5;
-        this.menu = [];
+        this.menu = [
+            dishesConst[0],
+        ];
     }
 
     setNumberOfGuests(num) {
@@ -54,7 +56,7 @@ class DinnerModel {
                 if(found) {
                     this.removeDishFromMenu(found.id);
                 }
-                this.menu.push(dish);
+                this.menu.push(id);
             }.bind(this));
     }
 
@@ -86,9 +88,7 @@ class DinnerModel {
                     'X-Mashape-Key': data.api_key
                 }
             }))
-            .then(res => {
-                return res.json();
-            });
+            .then(res => res.json());
     }
 
     //Returns all dishes of specific type (i.e. "starter", "main dish" or "dessert").
@@ -110,9 +110,6 @@ class DinnerModel {
     //Returns a dish of specific ID
     getDish(id) {
         return this.apiGet("recipes/"+id+"/information")
-            .then(res => {
-                return res;
-            })
             .catch(console.error);
     }
 }
@@ -127,12 +124,12 @@ class DinnerModel {
 // you just say "5 eggs" and not "5 pieces of eggs" or anything else.
 const dishesConst = [
     {
-        'id': 1,
+        'id': 559251,
         'name': 'Breakfast Pizza',
         'type': 'starter',
         'image': 'sourdough.jpg',
         'description': "Here is how you make it... Lore ipsum...",
-        'image': 'https://spoonacular.com/recipeImages/Breakfast-Pizza-559251.jpg',
+        'image': 'Breakfast-Pizza-559251.jpg',
         'ingredients': [{
             'name': 'active dry yeast',
             'quantity': 0.5,
