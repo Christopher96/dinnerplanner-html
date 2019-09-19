@@ -1,32 +1,68 @@
 class OverviewView {
     constructor(container, model) {
-        this.container = container;
+        this.container = $(container);
         this.model = model;
     }
 
     // An example of creating HTML procedurally. Think about the pros and cons of this approach.
     render() {
-      const paragraph = this.container.appendChild(document.createElement('P'))
-      paragraph.innerHTML = "This dinner will be Awesome!";
-
-      const num_people_val = 3;
-      const paragraph2 = this.container.appendChild(document.createElement('P'))
-      const num_people = paragraph2.appendChild(document.createElement('SPAN'))
-      num_people.innerHTML = num_people_val;
-      paragraph2.innerHTML += " people are coming!";
-
-      const paragraph3 = this.container.appendChild(document.createElement('P'))
-      paragraph3.innerHTML = "We will be eating the following:";
-
-      const list = this.container.appendChild(document.createElement('UL'))
-
-      for(const food of ["Bread!", "Ham!", "Pizza!"]) {
-        list.appendChild(document.createElement('UL')).innerHTML = food;
-      }
-
-      this.afterRender();
+        let template = `
+        <div id="overviewHeader">
+            <span class="title">My Dinner: <span class="value-num-guests"></span> People</span>
+            <button id="goBack" class="btn btn-primary">Go back and edit dinner</button>
+        </div>
+        <hr/>
+        <div id="overviewDishes">
+            <div class="total">
+                <span>
+                    <b>Total: </b>SEK <span class="value-total-price"></span>
+                </span>
+            </div>
+        </div>
+        <hr/>
+        <div id="overviewPrint">
+            <button id="toPrintBtn" class="btn btn-primary">
+                Print Full Recipe
+            </button>
+        </div>
+        `;
+        this.container.html(template);
+        this.afterRender();
     }
 
     afterRender() {
+        $(".value-num-guests").text(this.model.getNumberOfGuests());
+        this.model.getFullMenu().forEach(dish => {
+            this.addDish(dish);
+        });
+        $(".value-total-price").text(this.model.getTotalMenuPrice());
+        $("#goBack").click(() => {
+            new SearchView(this.container, this.model).render();
+        });
+        $("#toPrintBtn").click(() => {
+            new PrintoutView(this.container, this.model).render();
+        });
+    }
+
+    addDish(dish) {
+        const dishEl = $("<div/>", {
+            class: "dish"
+        }).prependTo("#overviewDishes");
+
+        $("<img/>", {
+            src: "https://spoonacular.com/recipeImages/" + dish.image
+        }).appendTo(dishEl);
+
+        $("<p/>", {
+            text: dish.name,
+            class: 'value-main-course-name'
+        }).appendTo(dishEl);
+
+        $("<span/>", {
+            text: "SEK " + this.model.getDishPrice(dish),
+            class: 'price'
+        }).appendTo(dishEl);
+
+
     }
 }
