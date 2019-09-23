@@ -1,22 +1,23 @@
 class DishDetailsView {
-    constructor(container, model, dish) {
+    constructor(container, model) {
+        this.el = (selector) => $app.el(selector, container);
         this.container = container;
         this.model = model;
-        this.dish = dish;
     }
 
     // An example of creating HTML procedurally. Think about the pros and cons of this approach.
-    render() {
-        let template = `
+    render(dish) {
+        this.container.innerHTML = `
         <div class="row">
             <div id="dishInformation" class="col-md-6">
                 <p class="title"></p>
                 <img src="#" alt="">
+                <p class="title">Instructions</p>
                 <p class="instructions"></p>
                 <button id="goBack" class="btn btn-primary">Back to search</button>
             </div>
             <div class="col-md-6">
-                <span class="title">Ingredients for 3 people</span>
+                <span class="title">Ingredients for <span class="people"></span> people</span>
                 <table id="ingredientTable" class="table">
                     <tbody>
                     </tbody>
@@ -26,30 +27,39 @@ class DishDetailsView {
                 <span class="total">Sek 77.20</span>
             </div>
         </div>`;
-        this.container.html(template);
+
+        this.model.getDish(dish)
+            .then(dish => {
+                $app.loader(false);
+                this.el("#dishInformation .title").innerHTML = dish.title;
+                this.el("#dishInformation img").setAttribute("src", dish.image);
+                this.el("#dishInformation .instructions").innerHTML = dish.instructions;
+                this.el("#ingredientTable tbody").innerHTML = "";
+                dish.extendedIngredients.forEach(ing => {
+                    let row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${ing.amount} ${ing.unit}</td>
+                        <td>${ing.name}</td>
+                        <td>SEK</td>
+                        <td>0.00</td>
+                    `;
+                    this.el("#ingredientTable tbody").appendChild(row);
+                })
+            });
+        $app.loader(true);
+        
+        this.el(".people").innerHTML = this.model.getNumberOfGuests();
+
         this.afterRender();
     }
 
     afterRender() {
-            this.model.getDish(this.dish)
-            .then(dish => {
-                $("#loader").css("visibility", "hidden");
-                $("#dishInformation .title").text(dish.title);
-                $("#dishInformation img").attr("src", dish.image);
-                $("#dishInformation .instructions").html(dish.instructions);
-                $("#ingredientTable tbody").html("");
-                dish.extendedIngredients.forEach(ing => {
-                    let row = $("<tr><td>"+ing.amount+" "+ing.unit+"</td>"+
-                        "<td>"+ing.name+"</td>"+
-                        "<td>SEK</td>"+
-                        "<td>0.00</td></tr>");
-                    $("#ingredientTable tbody").append(row);
-                })
-            });
-        $("#loader").css("visibility", "visible");
-        $("#goBack").click(() => {
-            let container = $(".page-content")
-            new SearchView(container, this.model).render();
-        });
+        new DishDetailsCtrl(this.model, this, this.dish);
+    }
+
+    update(details) {
+        switch(details.event) {
+            case "guests": this.el(".people").innerHTML = details.data;
+        }
     }
 }

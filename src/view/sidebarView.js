@@ -1,12 +1,14 @@
-class SideBarView {
+class SidebarView {
     constructor(container, model) {
+        this.el = (selector) => $app.el(selector, container);
         this.container = container;
         this.model = model;
+        model.addObserver(this);
     }
 
     // An example of creating HTML procedurally. Think about the pros and cons of this approach.
     render() {
-        let template = `
+        this.container.innerHTML = `
         <p class="title">My dinner</p>
         <div class="input-group">
             <div class="input-group-prepend">
@@ -32,19 +34,6 @@ class SideBarView {
         </button>
         <span class="value-num-guests">
         `;
-        this.container.html(template);
-        this.afterRender();
-    }
-
-    afterRender() {
-        let nrPeople = $("#numberPeople");
-        nrPeople.val(this.model.getNumberOfGuests());
-        $(".value-num-guests").html(this.model.getNumberOfGuests());
-        nrPeople.on("change", () => {
-            let val = nrPeople.val();
-            this.model.setNumberOfGuests(val);
-        });
-        let total = 0;
         this.model.getFullMenu().forEach(dish => {
             let price = this.model.getDishPrice(dish);
             let template = `
@@ -53,12 +42,16 @@ class SideBarView {
                 <td>SEK ${price}</td>
             </tr>
             `;
-            $("#dishTable tbody").append(template);
+            this.el("#dishTable tbody").insertAdjacentHTML("beforeend", template);
         });
-        $(".value-total-price").text(this.model.getTotalMenuPrice());
-        $("#confirmDinner").click(() => {
-            let container = $(".page-content");
-            new OverviewView(container, this.model).render();
-        });
+        this.afterRender();
+    }
+
+    afterRender() {
+        new SideBarCtrl(this.model, this);
+    }
+
+    update(model, details) {
+
     }
 }

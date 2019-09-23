@@ -1,39 +1,81 @@
 class App {
 
     constructor() {
-        const model = new DinnerModel();
-        const container = document.getElementsByClassName("page-content")[0];
+        this.model = new DinnerModel();
+        this.container = document.getElementsByClassName("page-content")[0];
 
-        this.views = [
+        this.pages = [
             { cls: SearchView, path: 'search' },
             { cls: PrintoutView, path: 'printout' },
             { cls: OverviewView, path: 'overview' },
             { cls: HomeView, path: 'home' },
+            { cls: DishDetailsView, path: 'details' },
         ];
 
-        this.views.forEach(view => {
-            view.obj = new view.cls(container, model, this);
+        this.pages.forEach(page => {
+            page.view = new page.cls(this.container, this.model);
+            this.model.addObserver(page.view);
         });
 
 
-        this.el("header").onclick = () => {
-            this.navigate('search');
-        };
     }
 
-    el(selector, container) {
-        if(container) {
-            return container.querySelector(selector);
+    el(selector, target) {
+        if(target) {
+            return target.querySelector(selector);
         }
         return document.querySelector(selector);
     }
 
-    navigate(path) {
-        this.views.find(view => view.path === path).obj.render();
+    loader(show) {
+        this.el("#loader").style.visibility = show ? "visible" : "hidden";
     }
+
+    mk(tag, attrs) {
+        const el = document.createElement(tag);
+        if(attrs) {
+            Object.keys(attrs).forEach((name) => el.setAttribute(name, attrs[name]));
+        }
+        return el;
+    }
+
+    mkDish(dish) {
+        const img = this.mk("img", {
+            src: "https://spoonacular.com/recipeImages/" + dish.image
+        });
+
+        const p = this.mk("p");
+
+        p.innerHTML = dish.title.replace("#WeekdaySupper", "").replace("#ChooseDreams", "");
+
+        const dishEl = this.mk("div", {
+            class: "dish"
+        });
+
+        dishEl.append(img, p);
+
+        const a = this.mk("a");
+            
+        a.append(dishEl);
+        a.onclick = () => {
+            this.navigate("details", dish.id);
+        }
+
+        return a;
+    }
+
+    navigate(path, params) {
+        this.pages.find(view => view.path === path).view.render(params);
+    }
+
 }
 
 
+let $app = new App();
+
 window.onload = function () {
-    const app = new App();
+    $app.el("header").onclick = () => {
+        $app.navigate('search');
+    };
+    $app.navigate("search");
 };

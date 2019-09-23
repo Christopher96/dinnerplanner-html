@@ -1,7 +1,28 @@
+class Observable{
+    constructor(){
+        this._observers = [];
+    }
+
+    addObserver(observer){
+        this._observers.push(observer);
+    }
+
+    notifyObservers(changeDetails) {
+        for(var i=0; i<this._observers.length; i++) {
+            this._observers[i].update(this, changeDetails);
+        }	
+    }
+
+    removeObserver(observer){
+        this._observers.filter(obs => obs !== observer);
+    }
+}
+
 //DinnerModel class
-class DinnerModel {
+class DinnerModel extends Observable {
 
     constructor() {
+        super();
         this.dishes = dishesConst;
         this.guests = 5;
         this.menu = [
@@ -10,9 +31,15 @@ class DinnerModel {
             dishesConst[0],
             dishesConst[0],
         ];
+        this._observers = [];
     }
 
     setNumberOfGuests(num) {
+        notifyObservers({
+            event: "guests",
+            data: this.guests
+        });
+
         if(num >= 0) {
             this.guests = num;
         } else {
@@ -98,7 +125,6 @@ class DinnerModel {
     //query argument, text, if passed only returns dishes that contain the query in name or one of the ingredients.
     //if you don't pass any query, all the dishes will be returned
     getAllDishes(type, query) {
-        console.log(query);
         if(!type && !query)
             return this.apiGet("recipes/search")
                 .then(res => {
@@ -128,7 +154,7 @@ class DinnerModel {
 const dishesConst = [
     {
         'id': 559251,
-        'name': 'Breakfast Pizza',
+        'title': 'Breakfast Pizza',
         'type': 'starter',
         'image': 'sourdough.jpg',
         'description': "Dolor dolor atque ad doloribus architecto. Molestiae temporibus iste elit earum provident. Quam obcaecati assumenda veritatis pariatur a Repellat quaerat repellendus quam laudantium similique Iste quisquam vitae quod sunt placeat",

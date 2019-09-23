@@ -1,12 +1,13 @@
 class OverviewView {
     constructor(container, model) {
-        this.container = $(container);
+        this.el = (selector) => $app.el(selector, container);
+        this.container = container;
         this.model = model;
     }
 
     // An example of creating HTML procedurally. Think about the pros and cons of this approach.
     render() {
-        let template = `
+        this.container.innerHTML = `
         <div id="overviewHeader">
             <span class="title">My Dinner: <span class="value-num-guests"></span> People</span>
             <button id="goBack" class="btn btn-primary">Go back and edit dinner</button>
@@ -26,43 +27,10 @@ class OverviewView {
             </button>
         </div>
         `;
-        this.container.html(template);
         this.afterRender();
     }
 
     afterRender() {
-        $(".value-num-guests").text(this.model.getNumberOfGuests());
-        this.model.getFullMenu().forEach(dish => {
-            this.addDish(dish);
-        });
-        $(".value-total-price").text(this.model.getTotalMenuPrice());
-        $("#goBack").click(() => {
-            new SearchView(this.container, this.model).render();
-        });
-        $("#toPrintBtn").click(() => {
-            new PrintoutView(this.container, this.model).render();
-        });
-    }
-
-    addDish(dish) {
-        const dishEl = $("<div/>", {
-            class: "dish"
-        }).prependTo("#overviewDishes");
-
-        $("<img/>", {
-            src: "https://spoonacular.com/recipeImages/" + dish.image
-        }).appendTo(dishEl);
-
-        $("<p/>", {
-            text: dish.name,
-            class: 'value-main-course-name'
-        }).appendTo(dishEl);
-
-        $("<span/>", {
-            text: "SEK " + this.model.getDishPrice(dish),
-            class: 'price'
-        }).appendTo(dishEl);
-
-
+        new OverviewCtrl(this.model, this);
     }
 }

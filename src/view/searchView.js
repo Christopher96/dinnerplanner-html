@@ -1,48 +1,39 @@
 class SearchView {
     constructor(container, model) {
-        this.container = $(container);
+        this.el = (selector) => $app.el(selector, container);
+        this.container = container;
         this.model = model;
-        this.startBtn = null;
     }
 
     // An example of creating HTML declaratively. Think about the pros and cons of this approach.
     render() {
+        this.container.innerHTML = "";
 
-        this.container.empty();
-
-        const loader = $("<div/>", {
-            id: "loader"
-        }).appendTo(this.container);
-
-        const spinner = $("<div/>", {
-            class: "spinner spinner-border",
-            role: "status"
-        }).appendTo(loader);
-
-        const srtext = $("<span/>", {
-            class: "sr-only",
-            text: "Loading ..."
-        }).appendTo(spinner);
-
-        const row = $("<div/>", {
+        const row = $app.mk("div", {
             class: "row"
-        }).appendTo(this.container);
+        });
 
-        const sideBarView = $("<div/>", {
+        const sideBarView = $app.mk("div", {
             id: "sideBarView",
             class: "col-md-4"
-        }).appendTo(row);
-        
+        });
+
         new SideBarView(sideBarView, this.model).render();
 
-        const dishSearchView = $("<div/>", {
+        const dishSearchView = $app.mk("div", {
             id: "dishSearchView",
             class: "col-md-8"
-        }).appendTo(row);
+        });
 
         new DishSearchView(dishSearchView, this.model).render();
+
+        row.append(sideBarView, dishSearchView);
+        this.container.append(row);
+
+        this.afterRender();
     }
 
     afterRender() {
+        new SearchCtrl(this.model, this);
     }
 }
