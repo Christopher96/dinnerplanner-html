@@ -14,9 +14,7 @@ class App {
 
         this.pages.forEach(page => {
             page.view = new page.cls(this.container, this.model);
-            this.model.addObserver(page.view);
         });
-
 
     }
 
@@ -44,7 +42,9 @@ class App {
             src: "https://spoonacular.com/recipeImages/" + dish.image
         });
 
-        const p = this.mk("p");
+        const p = this.mk("p" ,{
+            class: "value-main-course-name"
+        });
 
         p.innerHTML = dish.title.replace("#WeekdaySupper", "").replace("#ChooseDreams", "");
 
@@ -65,9 +65,12 @@ class App {
     }
 
     navigate(path, params) {
-        this.pages.find(view => view.path === path).view.render(params);
+        this.model.removeAllObservers();
+        const view = this.pages.find(view => view.path === path).view;
+        view.render(params);
+        window.localStorage.setItem("page", path);
+        window.localStorage.setItem("params", params);
     }
-
 }
 
 
@@ -77,5 +80,12 @@ window.onload = function () {
     $app.el("header").onclick = () => {
         $app.navigate('search');
     };
-    $app.navigate("search");
+
+    let page = window.localStorage.getItem("page");
+    let params = window.localStorage.getItem("params");
+
+    if(page === "undefined") {
+        page = "search"
+    }
+    $app.navigate(page, params);
 };

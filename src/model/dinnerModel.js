@@ -9,12 +9,16 @@ class Observable{
 
     notifyObservers(changeDetails) {
         for(var i=0; i<this._observers.length; i++) {
-            this._observers[i].update(this, changeDetails);
+            this._observers[i].update(changeDetails);
         }	
     }
 
     removeObserver(observer){
         this._observers.filter(obs => obs !== observer);
+    }
+
+    removeAllObservers() {
+        this._observers = [];
     }
 }
 
@@ -24,23 +28,20 @@ class DinnerModel extends Observable {
     constructor() {
         super();
         this.dishes = dishesConst;
-        this.guests = 5;
-        this.menu = [
-            dishesConst[0],
-            dishesConst[0],
-            dishesConst[0],
+        this.guests = window.localStorage.getItem("guests") || 1;
+        this.menu = window.localStorage.getItem("menu") || [
             dishesConst[0],
         ];
         this._observers = [];
     }
 
     setNumberOfGuests(num) {
-        notifyObservers({
-            event: "guests",
-            data: this.guests
-        });
-
         if(num >= 0) {
+            this.notifyObservers({
+                event: "guests",
+                data: num
+            });
+            window.localStorage.setItem("guests", num);
             this.guests = num;
         } else {
             return false;
@@ -87,6 +88,8 @@ class DinnerModel extends Observable {
                     this.removeDishFromMenu(found.id);
                 }
                 this.menu.push(id);
+
+                window.localStorage.setItem("menu", this.menu);
             }.bind(this));
     }
 

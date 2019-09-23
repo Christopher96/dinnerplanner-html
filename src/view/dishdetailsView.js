@@ -55,6 +55,7 @@ class DishDetailsView {
 
     afterRender() {
         new DishDetailsCtrl(this.model, this, this.dish);
+        this.model.addObserver(this);
     }
 
     update(details) {

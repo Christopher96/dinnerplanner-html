@@ -18,7 +18,7 @@ class SearchView {
             class: "col-md-4"
         });
 
-        new SideBarView(sideBarView, this.model).render();
+        new SidebarView(sideBarView, this.model).render();
 
         const dishSearchView = $app.mk("div", {
             id: "dishSearchView",

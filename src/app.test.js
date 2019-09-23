@@ -1,6 +1,7 @@
 var assert = chai.assert;
 var expect = chai.expect;
 
+
 describe("DinnerPlanner App", () => {
   let model = null;
   let homeView = null;
@@ -136,9 +137,7 @@ describe("DinnerPlanner App", () => {
   describe("Sidebar view", () => {
     beforeEach(() => {
       model = new DinnerModel();
-      sidebarView = new SidebarView(document.getElementById("page-content"), model);
-      sidebarController = new SidebarController(sidebarView, model);
-      sidebarController.renderView();
+      sidebarView = new SidebarView(document.getElementById("page-content"), model).render();
     });
 
     it("Has a number of guests input", () => {

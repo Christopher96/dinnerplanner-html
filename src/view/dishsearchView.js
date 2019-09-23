@@ -30,5 +30,4 @@ class DishSearchView {
     afterRender() {
         new DishSearchCtrl(this.model, this);
     }
-
 }
