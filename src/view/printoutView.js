@@ -21,7 +21,7 @@ class PrintoutView {
             let dishTemplate = `
             <div class="row">
                 <div class="col-md-2">
-                    <img src="https://spoonacular.com/recipeImages/${dish.image}" alt="">
+                    <img src="${dish.image}" alt="">
                 </div>
                 <div class="col-md-4">
                     <p class="title">${dish.title}</p>
@@ -29,7 +29,7 @@ class PrintoutView {
                 </div>
                 <div class="col-md-6">
                     <p class="title">Preparation</p>
-                    <span>${dish.description}</span>
+                    <span>Lorem laborum cupiditate odio deserunt natus. Ipsam ipsum numquam repudiandae dolorum maiores nam Fugiat beatae obcaecati voluptates recusandae harum? Unde quod nisi reiciendis veniam saepe. Temporibus repellendus quod porro deleniti</span>
                 </div>
             </div>
             `;

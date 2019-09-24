@@ -9,11 +9,9 @@ class DishSearchCtrl {
                 .then(res => {
                     $app.loader(false);
                     const items = view.el("#dishItems");
-                    console.log(items);
-                    console.log(res);
                     items.innerHTML ="";
                     res.forEach(dish => {
-                        const el = $app.mkDish(dish);
+                        const el = $app.mkDish(dish, false);
                         console.log(el);
                         items.appendChild(el);
                     });

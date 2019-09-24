@@ -2,7 +2,7 @@ class OverviewCtrl {
     constructor(model, view) {
         view.el(".value-num-guests").innerHTML = model.getNumberOfGuests();
         model.getFullMenu().forEach(dish => {
-            const el = $app.mkDish(dish);
+            const el = $app.mkDish(dish, true);
             view.el("#overviewDishes").appendChild(el);
         });
         view.el(".value-total-price").innerHTML = model.getTotalMenuPrice();

@@ -138,6 +138,10 @@ header {
     margin: 2em;
 }
 
+#overviewDishes .dish {
+    cursor: pointer;
+}
+
 #overviewPrint {
     padding: 2em;
     text-align: center;
@@ -173,6 +177,11 @@ header {
 
 .title {
     font-size: 1.5em;
+}
+
+.added {
+    color: green;
+    visibility: hidden;
 }
 
 /* MEDIA QUERIES */

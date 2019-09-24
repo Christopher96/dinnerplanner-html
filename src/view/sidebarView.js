@@ -8,7 +8,7 @@ class SidebarView {
     // An example of creating HTML procedurally. Think about the pros and cons of this approach.
     render() {
         this.container.innerHTML = `
-        <p class="title">My dinner</p>
+        <p class="title">My dinner - <span class="value-num-guests"></span> Guests</p>
         <div class="input-group">
             <div class="input-group-prepend">
                 <span class="input-group-text">People</span>
@@ -33,15 +33,12 @@ class SidebarView {
         </button>
         `;
         this.model.getFullMenu().forEach(dish => {
-            let price = this.model.getDishPrice(dish);
-            let template = `
-            <tr>
-                <td class='value-main-course-name'>${dish.title}</td>
-                <td>SEK ${price}</td>
-            </tr>
-            `;
-            this.el("#dishTable tbody").insertAdjacentHTML("beforeend", template);
+            this.addToMenu(dish);
         });
+        this.el(".input-num-guests").value = this.model.getNumberOfGuests();
+        this.el(".value-num-guests").innerHTML = this.model.getNumberOfGuests();
+        this.el(".value-total-price").innerHTML = this.model.getTotalMenuPrice();
+
         this.afterRender();
     }
 
@@ -50,12 +47,27 @@ class SidebarView {
         this.model.addObserver(this);
     }
 
+    addToMenu(dish) {
+        let price = this.model.getDishPrice(dish);
+        let template = `
+            <tr>
+                <td class='value-main-course-name'>${dish.title}</td>
+                <td>SEK ${price}</td>
+            </tr>
+            `;
+        this.el("#dishTable tbody").insertAdjacentHTML("beforeend", template);
+    }
+
     update(details) {
         switch(details.event) {
             case "guests": 
-                this.el(".input-num-guests").value = this.model.getNumberOfGuests();
+                this.el(".input-num-guests").value = details.data;
+                this.el(".value-num-guests").innerHTML = details.data;
                 this.el(".value-total-price").innerHTML = this.model.getTotalMenuPrice();
-            break;
+                break;
+            case "menu":
+                this.addToMenu(details.data);
+                break;
         }
     }
 }

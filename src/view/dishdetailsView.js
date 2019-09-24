@@ -7,6 +7,8 @@ class DishDetailsView {
 
     // An example of creating HTML procedurally. Think about the pros and cons of this approach.
     render(dish) {
+        this.dish = dish;
+
         this.container.innerHTML = `
         <div class="row">
             <div id="dishInformation" class="col-md-6">
@@ -23,7 +25,8 @@ class DishDetailsView {
                     </tbody>
                 </table>
                 <hr/>
-                <button class="btn btn-primary">Add to menu</button>
+                <button id="menuAdd" class="btn btn-primary">Add to menu</button>
+                <span class="added"> Added &#10004;</span>
                 <span class="total">Sek 77.20</span>
             </div>
         </div>`;
@@ -54,6 +57,7 @@ class DishDetailsView {
     }
 
     afterRender() {
+        console.log(this.dish);
         new DishDetailsCtrl(this.model, this, this.dish);
         this.model.addObserver(this);
     }
