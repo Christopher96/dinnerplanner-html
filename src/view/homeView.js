@@ -10,11 +10,13 @@ class HomeView {
         this.container.innerHTML = `
             <div id="startContainer">
                 <div id="startTxt">
-                    <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod</span>
-                    <button id="startBtn" class="btn btn-primary"></button>
+                    <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+Dolor officia adipisci aperiam labore et iste Fugit cupiditate voluptatem provident nesciunt placeat Unde reiciendis deserunt a magni exercitationem fugit aliquam Id quos dolorem magnam fugiat sequi. Dolorum accusantium provident</span><br/>
+                    <button id="startBtn" class="btn btn-primary">Start</button>
                 </div>
             </div>
         `;
+        this.startBtn = this.el("#startBtn");
         this.afterRender();
     }
 

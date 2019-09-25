@@ -32,9 +32,7 @@ class SidebarView {
             Confirm Dinner
         </button>
         `;
-        this.model.getFullMenu().forEach(dish => {
-            this.addToMenu(dish);
-        });
+        this.reloadMenu();
         this.el(".input-num-guests").value = this.model.getNumberOfGuests();
         this.el(".value-num-guests").innerHTML = this.model.getNumberOfGuests();
         this.el(".value-total-price").innerHTML = this.model.getTotalMenuPrice();
@@ -49,13 +47,32 @@ class SidebarView {
 
     addToMenu(dish) {
         let price = this.model.getDishPrice(dish);
-        let template = `
-            <tr>
-                <td class='value-main-course-name'>${dish.title}</td>
-                <td>SEK ${price}</td>
-            </tr>
-            `;
-        this.el("#dishTable tbody").insertAdjacentHTML("beforeend", template);
+        let dishEl = $app.mk("tr", {
+            "data-id": dish.id
+        });
+        dishEl.innerHTML = `
+            <td class='value-main-course-name'>${dish.title}</td>
+            <td>SEK ${price}</td>
+            <td><button data-id="${dish.id} "class="remove-dish btn btn-primary">&#10060;</button></td>
+        `;
+
+        let btn = dishEl.querySelector(".remove-dish");
+        btn.onclick = () => {
+            this.model.removeDishFromMenu(btn.dataset.id);
+            this.el(`#dishTable tbody tr[data-id='${dish.id}']`).remove();
+        }
+        this.el("#dishTable tbody").append(dishEl);
+    }
+
+    reloadMenu() {
+        this.el("#dishTable tbody").innerHTML = "";
+        this.model.getFullMenu().forEach(dish => {
+            this.addToMenu(dish);
+        });
+    }
+
+    removeDish(dish) {
+        this.model.removeDishFromMenu(dish);
     }
 
     update(details) {
@@ -66,7 +83,7 @@ class SidebarView {
                 this.el(".value-total-price").innerHTML = this.model.getTotalMenuPrice();
                 break;
             case "menu":
-                this.addToMenu(details.data);
+                this.reloadMenu();
                 break;
         }
     }

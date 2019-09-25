@@ -67,7 +67,7 @@ window.onload = function () {
     let params = window.localStorage.getItem("params");
 
     if(!page) {
-        page = "search"
+        page = "home"
     }
     $app.navigate(page, params);
     $app.model.loadState();

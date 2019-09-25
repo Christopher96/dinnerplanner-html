@@ -11,14 +11,16 @@ class DishDetailsView {
 
         this.container.innerHTML = `
         <div class="row">
-            <div id="dishInformation" class="col-md-6">
+            <div id="sideBarView" class="col-md-4">
+            </div>
+            <div id="dishInformation" class="col-md-4">
                 <p class="title"></p>
                 <img src="#" alt="">
                 <p class="title">Instructions</p>
                 <p class="instructions"></p>
                 <button id="goBack" class="btn btn-primary">Back to search</button>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <span class="title">Ingredients for <span class="people"></span> people</span>
                 <table id="ingredientTable" class="table">
                     <tbody>
@@ -30,6 +32,9 @@ class DishDetailsView {
                 <span class="total">Sek 77.20</span>
             </div>
         </div>`;
+
+        const sideBarView = this.el("#sideBarView");
+        new SidebarView(sideBarView, this.model).render();
 
         this.model.getDish(dish)
             .then(dish => {
@@ -50,14 +55,13 @@ class DishDetailsView {
                 })
             });
         $app.loader(true);
-        
+
         this.el(".people").innerHTML = this.model.getNumberOfGuests();
 
         this.afterRender();
     }
 
     afterRender() {
-        console.log(this.dish);
         new DishDetailsCtrl(this.model, this, this.dish);
         this.model.addObserver(this);
     }
